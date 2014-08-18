@@ -140,7 +140,6 @@ void hide_wtfpm(void) {
 }
 
 void click_config_provider(void *context) {
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "click_config_provider()");
   window_single_click_subscribe(BUTTON_ID_UP, handle_start_pause_click);
   window_single_click_subscribe(BUTTON_ID_SELECT, handle_reset_click);
   window_single_click_subscribe(BUTTON_ID_DOWN, handle_wtf_click);
@@ -148,7 +147,6 @@ void click_config_provider(void *context) {
 
 void handle_reset_click(ClickRecognizerRef recognizer, void *context) {
   if (state==PAUSED) {
-    //APP_LOG(APP_LOG_LEVEL_DEBUG, "reset click: new state RESETTED");
     state = RESETTED;
     wtf_count=0;
     seconds=0;
@@ -164,22 +162,18 @@ void handle_start_pause_click(ClickRecognizerRef recognizer, void *context) {
   switch (state) {
     case RESETTED:
     case PAUSED:
-      //APP_LOG(APP_LOG_LEVEL_DEBUG, "start pause click: branch PAUSED/RESETTED");
       state = RUNNING; //resetted->running
       tick_timer_service_subscribe(SECOND_UNIT, handle_ticks);
       action_bar_layer_set_icon(s_actionbarlayer, BUTTON_ID_UP, s_res_icon_pause);
       action_bar_layer_clear_icon(s_actionbarlayer, BUTTON_ID_SELECT);        
       action_bar_layer_set_icon(s_actionbarlayer, BUTTON_ID_DOWN, s_res_icon_cloud);
-      //APP_LOG(APP_LOG_LEVEL_DEBUG, "start pause click: new state RUNNING");
       break;
     case RUNNING:
-      //APP_LOG(APP_LOG_LEVEL_DEBUG, "start pause click: branch RUNNING");
       state = PAUSED; //runnung->paused
       tick_timer_service_unsubscribe();
       action_bar_layer_set_icon(s_actionbarlayer, BUTTON_ID_UP, s_res_icon_play);
       action_bar_layer_set_icon(s_actionbarlayer, BUTTON_ID_SELECT, s_res_icon_stop);
       action_bar_layer_clear_icon(s_actionbarlayer, BUTTON_ID_DOWN);
-      //APP_LOG(APP_LOG_LEVEL_DEBUG, "start pause click: new state PAUSED");    
       break;
   }
 }
@@ -200,7 +194,7 @@ void handle_ticks(struct tm *tick_time, TimeUnits units_changed) {
 }
 
 void update_wtfpm(void) {
-  float f_wtfpm = wtf_count/(seconds/60.0);
+  float f_wtfpm = wtf_count/(seconds/60.0)+0.5; //+0.5 for correct rounding
   static char wtfpm[]="123456789";
   snprintf(wtfpm, sizeof(wtfpm), "%d", (int)f_wtfpm);
   text_layer_set_text(s_wtfpm, wtfpm);  
