@@ -179,12 +179,10 @@ void handle_start_pause_click(ClickRecognizerRef recognizer, void *context) {
 }
 
 void handle_wtf_click(ClickRecognizerRef recognizer, void *context) {
-  if (state==RUNNING) {
-    static char counter[]="123456789";
-    wtf_count++;
-    snprintf(counter, sizeof(counter), "%d", wtf_count);
-    text_layer_set_text(s_wtf, counter);    
-  }
+  static char counter[]="123456789";
+  wtf_count++;
+  snprintf(counter, sizeof(counter), "%d", wtf_count);
+  text_layer_set_text(s_wtf, counter);    
 }
 
 void handle_ticks(struct tm *tick_time, TimeUnits units_changed) {
