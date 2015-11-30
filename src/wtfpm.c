@@ -146,7 +146,6 @@ void click_config_provider(void *context) {
 }
 
 void handle_reset_click(ClickRecognizerRef recognizer, void *context) {
-  if (state==PAUSED) {
     state = RESETTED;
     wtf_count=0;
     seconds=0;
@@ -155,7 +154,6 @@ void handle_reset_click(ClickRecognizerRef recognizer, void *context) {
     text_layer_set_text(s_wtf, "0");
     action_bar_layer_clear_icon(s_actionbarlayer, BUTTON_ID_DOWN);
     action_bar_layer_clear_icon(s_actionbarlayer, BUTTON_ID_SELECT);    
-  }
 }
 
 void handle_start_pause_click(ClickRecognizerRef recognizer, void *context) {

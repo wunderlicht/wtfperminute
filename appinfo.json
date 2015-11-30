@@ -32,9 +32,9 @@
     },
     "sdkVersion": "2",
     "shortName": "WTFperMinute",
-    "uuid": "349be3a2-eff7-4b2c-ac59-20616c31c362",
+    "uuid": "7163a08b-76fa-489a-9b8a-12c597911369",
     "versionCode": 1,
-    "versionLabel": "0.9",
+    "versionLabel": "1.0",
     "watchapp": {
         "watchface": false
     }
