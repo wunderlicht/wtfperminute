@@ -14,6 +14,7 @@ void click_config_provider(void *context);
 void handle_reset_click(ClickRecognizerRef recognizer, void *context);
 void handle_start_pause_click(ClickRecognizerRef recognizer, void *context);
 void handle_wtf_click(ClickRecognizerRef recognizer, void *context);
+void handle_wtf_click_minus(ClickRecognizerRef recognizer, void *context);
 void handle_ticks(struct tm *tick_time, TimeUnits units_changed);
 void update_time(void);
 void update_wtfpm(void);
@@ -143,10 +144,10 @@ void click_config_provider(void *context) {
   window_single_click_subscribe(BUTTON_ID_UP, handle_start_pause_click);
   window_single_click_subscribe(BUTTON_ID_SELECT, handle_reset_click);
   window_single_click_subscribe(BUTTON_ID_DOWN, handle_wtf_click);
+  window_long_click_subscribe(BUTTON_ID_DOWN, 1000, handle_wtf_click_minus, NULL);
 }
 
 void handle_reset_click(ClickRecognizerRef recognizer, void *context) {
-  if (state==PAUSED) {
     state = RESETTED;
     wtf_count=0;
     seconds=0;
@@ -155,7 +156,6 @@ void handle_reset_click(ClickRecognizerRef recognizer, void *context) {
     text_layer_set_text(s_wtf, "0");
     action_bar_layer_clear_icon(s_actionbarlayer, BUTTON_ID_DOWN);
     action_bar_layer_clear_icon(s_actionbarlayer, BUTTON_ID_SELECT);    
-  }
 }
 
 void handle_start_pause_click(ClickRecognizerRef recognizer, void *context) {
@@ -179,12 +179,17 @@ void handle_start_pause_click(ClickRecognizerRef recognizer, void *context) {
 }
 
 void handle_wtf_click(ClickRecognizerRef recognizer, void *context) {
-  if (state==RUNNING) {
-    static char counter[]="123456789";
-    wtf_count++;
-    snprintf(counter, sizeof(counter), "%d", wtf_count);
-    text_layer_set_text(s_wtf, counter);    
-  }
+  static char counter[]="123456789";
+  wtf_count++;
+  snprintf(counter, sizeof(counter), "%d", wtf_count);
+  text_layer_set_text(s_wtf, counter);    
+}
+
+void handle_wtf_click_minus(ClickRecognizerRef recognizer, void *context) {
+  static char counter[]="123456789";
+  wtf_count--;
+  snprintf(counter, sizeof(counter), "%d", wtf_count);
+  text_layer_set_text(s_wtf, counter);    
 }
 
 void handle_ticks(struct tm *tick_time, TimeUnits units_changed) {
